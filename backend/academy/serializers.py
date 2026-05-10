@@ -6,6 +6,11 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = '__all__'
 
+class StudentPictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['profile_picture']
+
 class InstructorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Instructor
