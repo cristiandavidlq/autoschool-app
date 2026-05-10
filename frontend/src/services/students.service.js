@@ -10,4 +10,13 @@ export const studentsService = {
     const response = await api.post('/students/', data);
     return response.data;
   },
+
+  uploadPicture: async (studentId, file) => {
+    const formData = new FormData();
+    formData.append('profile_picture', file);
+    const response = await api.post(`/students/${studentId}/upload-picture/`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
 };

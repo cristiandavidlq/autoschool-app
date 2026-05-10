@@ -21,7 +21,10 @@ class StudentViewSet(viewsets.ModelViewSet):
         serializer = StudentPictureSerializer(student, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(StudentSerializer(student).data, status=status.HTTP_200_OK)
+            return Response(
+                StudentSerializer(student, context={"request": request}).data,
+                status=status.HTTP_200_OK,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InstructorViewSet(viewsets.ModelViewSet):
