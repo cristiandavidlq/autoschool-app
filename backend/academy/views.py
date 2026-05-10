@@ -18,14 +18,29 @@ class StudentViewSet(viewsets.ModelViewSet):
             parser_classes=[MultiPartParser, FormParser])
     def upload_picture(self, request, pk=None):
         student = self.get_object()
-        serializer = StudentPictureSerializer(student, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
+
+        # TODO(actividad): Validar que exista `profile_picture` en request.FILES.
+        # TODO(actividad): Validar tipo/tamano basico del archivo antes de guardar.
+        # TODO(actividad): Usar StudentPictureSerializer para persistir la imagen.
+        # TODO(actividad): Retornar StudentSerializer(student, context={"request": request}).data
+        #                  cuando la subida sea exitosa.
+
+        incoming_file = request.FILES.get('profile_picture')
+        if not incoming_file:
             return Response(
-                StudentSerializer(student, context={"request": request}).data,
-                status=status.HTTP_200_OK,
+                {'detail': 'Debes enviar el archivo profile_picture.'},
+                status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(
+            {
+                'detail': (
+                    'TODO_ACTIVIDAD: completa la logica de guardado en '
+                    'academy.views.StudentViewSet.upload_picture'
+                )
+            },
+            status=status.HTTP_501_NOT_IMPLEMENTED,
+        )
 
 class InstructorViewSet(viewsets.ModelViewSet):
     pass

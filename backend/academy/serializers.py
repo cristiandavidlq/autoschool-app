@@ -7,6 +7,11 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class StudentPictureSerializer(serializers.ModelSerializer):
+    def validate_profile_picture(self, value):
+        # TODO(actividad): Implementar validaciones de archivo (tamano y tipo MIME).
+        # Ejemplo: permitir image/jpeg e image/png y limitar a 2MB.
+        return value
+
     class Meta:
         model = Student
         fields = ['profile_picture']

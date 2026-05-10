@@ -89,6 +89,8 @@ export function UploadPictureModal({ student, onClose, onSuccess }) {
   };
 
   const capturePhoto = () => {
+    // TODO(actividad): Completar captura desde webcam y convertir canvas -> File.
+    // Pista: usa canvas.toBlob y crea un File para reutilizar el mismo flujo de subida.
     if (!videoRef.current) return;
     const video = videoRef.current;
     if (!video.videoWidth || !video.videoHeight) return;
@@ -102,9 +104,13 @@ export function UploadPictureModal({ student, onClose, onSuccess }) {
 
     canvas.toBlob((blob) => {
       if (!blob) return;
-      const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
-      setUploadFile(file);
-      setUploadPreview(URL.createObjectURL(file));
+
+      // TODO(actividad): construir el archivo capturado y actualizar estados.
+      // const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+      // setUploadFile(file);
+      // setUploadPreview(URL.createObjectURL(file));
+
+      setUploadError("TODO: completar guardado de captura desde webcam.");
       stopCamera();
     }, "image/jpeg", 0.9);
   };
@@ -117,6 +123,10 @@ export function UploadPictureModal({ student, onClose, onSuccess }) {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    // TODO(actividad): agregar validaciones basicas (tipo y tamano maximo).
+    // Ejemplos sugeridos: image/jpeg, image/png y un limite de 2MB.
+
     setUploadFile(file);
     setUploadPreview(URL.createObjectURL(file));
   };
@@ -126,11 +136,16 @@ export function UploadPictureModal({ student, onClose, onSuccess }) {
     try {
       setIsUploading(true);
       setUploadError("");
+
+      // TODO(actividad): mejorar manejo de estado y errores durante el submit.
+      // Debe consumir studentsService.uploadPicture y cerrar modal en exito.
       const updated = await studentsService.uploadPicture(student.id, uploadFile);
       onSuccess(updated);
       handleClose();
-    } catch {
-      setUploadError("Error al subir la imagen. Intenta de nuevo.");
+    } catch (err) {
+      setUploadError(
+        err?.message || "Error al subir la imagen. Completa la implementacion pendiente."
+      );
     } finally {
       setIsUploading(false);
     }
