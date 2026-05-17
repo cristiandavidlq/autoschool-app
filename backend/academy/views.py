@@ -29,17 +29,29 @@ class StudentViewSet(viewsets.ModelViewSet):
         if not incoming_file:
             return Response(
                 {'detail': 'Debes enviar el archivo profile_picture.'},
-                status=status.HTTP_400_BAD_REQUEST,
+                status = status.HTTP_400_BAD_REQUEST,
             )
 
-        return Response(
-            {
-                'detail': (
-                    'TODO_ACTIVIDAD: completa la logica de guardado en '
-                    'academy.views.StudentViewSet.upload_picture'
-                )
-            },
-            status=status.HTTP_501_NOT_IMPLEMENTED,
+        serializer = StudentPictureSerializer(
+            student, 
+            data = request.FILES, 
+            partial = True
+        )
+
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors, 
+                status = status.HTTP_400_BAD_REQUEST
+            )
+        
+        serializer.save()
+
+        return Response(            
+                StudentSerializer(
+                    student, 
+                    context = {"request": request}
+                ).data,
+            status=status.HTTP_200_OK,
         )
 
 class InstructorViewSet(viewsets.ModelViewSet):

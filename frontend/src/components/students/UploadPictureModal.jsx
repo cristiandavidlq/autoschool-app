@@ -110,7 +110,9 @@ export function UploadPictureModal({ student, onClose, onSuccess }) {
       // setUploadFile(file);
       // setUploadPreview(URL.createObjectURL(file));
 
-      setUploadError("TODO: completar guardado de captura desde webcam.");
+      const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+      setUploadFile(file);
+      setUploadPreview(URL.createObjectURL(file));
       stopCamera();
     }, "image/jpeg", 0.9);
   };
@@ -127,6 +129,21 @@ export function UploadPictureModal({ student, onClose, onSuccess }) {
     // TODO(actividad): agregar validaciones basicas (tipo y tamano maximo).
     // Ejemplos sugeridos: image/jpeg, image/png y un limite de 2MB.
 
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+    if(!allowedTypes.includes(file.type)) {
+      setUploadError("Tipo de archivo no permitido. Solo son permitidos los formatos JPEG, PNG o WEBP.");
+      return;
+    }
+
+    const maxSizeInBytes = 2 * 1024 * 1024;
+
+    if(file.size > maxSizeInBytes) {
+      setUploadError("El archivo es demasiado grande. El tamaño máximo permitido es de 2MB.");
+      return;
+    }
+    
+    setUploadError("");
     setUploadFile(file);
     setUploadPreview(URL.createObjectURL(file));
   };

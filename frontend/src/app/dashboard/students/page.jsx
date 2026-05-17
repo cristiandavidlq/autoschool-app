@@ -78,6 +78,9 @@ export default function StudentsPage() {
   const handlePictureSuccess = (updated) => {
     // TODO(actividad): actualizar el estado local para reflejar la nueva foto
     // Pista: reemplaza el estudiante actualizado dentro de `students` usando su id.
+    setStudents((prevStudents) =>
+      prevStudents.map((student) => (student.id === updated.id ? updated : student))
+    );
     console.log("TODO: actualizar listado con estudiante modificado", updated);
   };
 
